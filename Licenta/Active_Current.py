@@ -15,16 +15,16 @@ SAMPLE = 1
 
 # Number of measurements and name of the Excel file where the measurements will be saved
 READINGS = 100
-EXCEL_FILE = f'../Active_Current_SAMPLE{SAMPLE}.xlsx'
+EXCEL_FILE = f'../Curent_Activ_SAMPLE{SAMPLE}.xlsx'
 
 def create_active_current_graphic(sheet, readings, position):
     """ Generate the graphic for Active Current """
 
     chart = LineChart()
-    chart.title = "Active Current Analysis"
+    chart.title = "Analiza Curent Activ"
     chart.style = 13
-    chart.y_axis.title = "Current (mA)"
-    chart.x_axis.title = "Number of measurement"
+    chart.y_axis.title = "Curent (mA)"
+    chart.x_axis.title = "Numarul masuratorii"
     chart.width = 20
     chart.height = 10
 
@@ -38,7 +38,7 @@ def create_active_current_graphic(sheet, readings, position):
 
     # Legend
     if len(chart.series) >= 1:
-        chart.series[0].title = SeriesLabel(v="Measured Current")
+        chart.series[0].title = SeriesLabel(v="Curent masurat")
 
     sheet.add_chart(chart, position)
 
@@ -76,10 +76,10 @@ def active_current_test():
         # Excel initialization
         wb = Workbook()
         sheet = wb.active
-        sheet.title = "Active Current Data"
+        sheet.title = "Date Curent Activ"
 
         # Table header
-        sheet.append(["No.", "Active Current (mA)"])
+        sheet.append(["Nr.", "Curent Activ (mA)"])
 
         print(f"\nStarting {READINGS} current readings.")
         for i in range(1, READINGS + 1):

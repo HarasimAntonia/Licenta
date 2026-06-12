@@ -4,7 +4,7 @@ import time
 # Serial communication and sample number
 PORT = 'COM10'
 BAUDRATE = 115200
-SAMPLE = 1
+SAMPLE = 2
 
 def interrupts_frequency():
     arduino = None

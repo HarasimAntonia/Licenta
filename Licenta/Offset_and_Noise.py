@@ -8,20 +8,20 @@ from openpyxl.chart.series import SeriesLabel
 # Serial communication and sample number
 PORT = 'COM10'
 BAUDRATE = 115200
-SAMPLE = 5
+SAMPLE = 1
 
 # Number of measurements and name of the Excel file
 READINGS = 100
-EXCEL_FILE = f'../Offset_and_Noise_SAMPLE{SAMPLE}.xlsx'
+EXCEL_FILE = f'../Offset_si_Zgomot_SAMPLE{SAMPLE}.xlsx'
 
 def create_offset_graphic(sheet, readings, position):
     """ Generate the graphic for Offset (axis X, Y, Z) """
 
     chart = LineChart()
-    chart.title = "Offset Analysis"
+    chart.title = "Analiza Offset"
     chart.style = 13
-    chart.y_axis.title = "Magnetic Field (mT)"
-    chart.x_axis.title = "Number of measurement"
+    chart.y_axis.title = "Camp magnetic (mT)"
+    chart.x_axis.title = "Numarul masuratorii"
     chart.width = 20
     chart.height = 10
 
@@ -64,8 +64,8 @@ def create_noise_graphic(sheet, col_start, title, position, readings):
     chart = LineChart()
     chart.title = title
     chart.style = 13
-    chart.y_axis.title = "Noise (uT)"
-    chart.x_axis.title = "Number of measurement"
+    chart.y_axis.title = "Zgomot (uT)"
+    chart.x_axis.title = "Numarul masuratorii"
     chart.width = 20
     chart.height = 10
    # chart.y_axis.scaling.min = 0
@@ -76,7 +76,7 @@ def create_noise_graphic(sheet, col_start, title, position, readings):
 
     # Legend
     if len(chart.series) >= 2:
-        chart.series[0].title = SeriesLabel(v="Calculated Noise")
+        chart.series[0].title = SeriesLabel(v="Zgomot calculat")
 
         max_line = chart.series[1]
         max_line.title = SeriesLabel(v="Maximum")
@@ -114,10 +114,10 @@ def offset_and_noise():
         # Excel initialization
         wb = Workbook()
         sheet = wb.active
-        sheet.title = "Offset data"
+        sheet.title = "Date Offset"
 
         # Table header
-        sheet.append(["No.", "X (mT)", "Y (mT)", "Z (mT)"])
+        sheet.append(["Nr.", "X (mT)", "Y (mT)", "Z (mT)"])
 
         print(f"Reading {READINGS} values.")
         while active_readings < READINGS:
@@ -163,11 +163,11 @@ def offset_and_noise():
             # Helper data moved far to the right
             sheet.cell(row=1, column=27, value="Max Lim (mT)")
             sheet.cell(row=1, column=28, value="Min Lim (mT)")
-            sheet.cell(row=1, column=29, value="Noise X (uT)")
+            sheet.cell(row=1, column=29, value="Zgomot X (uT)")
             sheet.cell(row=1, column=30, value="Limit X (uT)")
-            sheet.cell(row=1, column=31, value="Noise Y (uT)")
+            sheet.cell(row=1, column=31, value="Zgomot Y (uT)")
             sheet.cell(row=1, column=32, value="Limit Y (uT)")
-            sheet.cell(row=1, column=33, value="Noise Z (uT)")
+            sheet.cell(row=1, column=33, value="Zgomot Z (uT)")
             sheet.cell(row=1, column=34, value="Limit Z (uT)")
 
             # Write 100 rows of limits for offset and noise
@@ -184,14 +184,14 @@ def offset_and_noise():
             # Saving the final values for offset and noise in different cells
             sheet['F1'], sheet['G1'], sheet['H1'] = "Offset X (mT)", "Offset Y (mT)", "Offset Z (mT)"
             sheet['F2'], sheet['G2'], sheet['H2'] = offset_x, offset_y, offset_z
-            sheet['F4'], sheet['G4'], sheet['H4'] = "Noise X (uT)", "Noise Y (uT)", "Noise Z (uT)"
+            sheet['F4'], sheet['G4'], sheet['H4'] = "Zgomot X (uT)", "Zgomot Y (uT)", "Zgomot Z (uT)"
             sheet['F5'], sheet['G5'], sheet['H5'] = noise_x, noise_y, noise_z
 
             # Create offset graphic starting with K2 cell and noise graphic starting with K23
             create_offset_graphic(sheet, READINGS, position="K2")
-            create_noise_graphic(sheet, 29, "Noise X", "K23", READINGS)
-            create_noise_graphic(sheet, 31, "Noise Y", "K44", READINGS)
-            create_noise_graphic(sheet, 33, "Noise Z", "K65", READINGS)
+            create_noise_graphic(sheet, 29, "Zgomot X", "K23", READINGS)
+            create_noise_graphic(sheet, 31, "Zgomot Y", "K44", READINGS)
+            create_noise_graphic(sheet, 33, "Zgomot Z", "K65", READINGS)
 
             # Saving in Excel
             try:

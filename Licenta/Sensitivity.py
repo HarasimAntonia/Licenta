@@ -19,7 +19,7 @@ CURRENT_LIST = [-1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0.0, 0.2, 0.4, 0
 READINGS = 50
 
 # Excel file name
-EXCEL_FILE = f'../Sensitivity_SAMPLE{SAMPLE}.xlsx'
+EXCEL_FILE = f'../Senzitivitate_SAMPLE{SAMPLE}.xlsx'
 
 def calculate_sensitivity(calculated_field, measured_field):
     n = len(calculated_field)
@@ -33,10 +33,10 @@ def calculate_sensitivity(calculated_field, measured_field):
 def create_sensitivity_graphic(sheet, num_points, position):
     """ Generate the graphic for Sensitivity (Measured Field Z vs Applied Current) """
     chart = ScatterChart()
-    chart.title = "Sensitivity Analysis"
+    chart.title = "Analiza Senzitivitate"
     chart.style = 13
-    chart.x_axis.title = "Calculated Magnetic Field Z-axis (mT)"
-    chart.y_axis.title = "Magnetic Field Z-axis (LSB)"
+    chart.x_axis.title = "Camp magnetic calculat axa Z (mT)"
+    chart.y_axis.title = "Camp magnetic masurat axa Z (LSB)"
     chart.width = 20
     chart.height = 10
 
@@ -46,7 +46,7 @@ def create_sensitivity_graphic(sheet, num_points, position):
     # Y axis values (Measured Magnetic Field in LSB - Column D)
     y_values = Reference(sheet, min_col=4, min_row=2, max_row=num_points + 1)
 
-    series = SeriesFactory(values=y_values, xvalues=x_values, title="Magnetic Field Z-axis")
+    series = SeriesFactory(values=y_values, xvalues=x_values, title="Camp magnetic axa Z")
     chart.series.append(series)
     sheet.add_chart(chart, position)
 
@@ -120,28 +120,27 @@ def sensitivity_test():
             raw_data.append([current, applied_field, z_avg])
 
         sensitivity = round(calculate_sensitivity(calculated_field, measured_field),3)
-        print(f"Calculated Sensitivity (Slope): {sensitivity:.4f}")
+        print(f"Senzitivitate calculata (Panta): {sensitivity:.4f}")
 
         # Excel initialization
         wb = Workbook()
         sheet = wb.active
-        sheet.title = "Sensitivity Data"
+        sheet.title = "Date Senzitivitate"
 
         # Table header
         sheet.append([
-            "Applied Current (A)",
-            "Calculated Magnetic Field Z-axis (mT)",
-            "Measured Magnetic Field Z-axis (mT)",
-            "Measured Magnetic Field Z-axis (LSB)"
+            "Curent Aplicat (A)",
+            "Camp magnetic calculat axa Z (mT)",
+            "Camp magnetic masurat axa Z (mT)",
+            "Camp magnetic masurat axa Z (LSB)"
         ])
-
         for data in raw_data:
             current, applied_field, z_avg_lsb = data
             z_avg_mt = round(z_avg_lsb / sensitivity, 2)
             sheet.append([current, applied_field, z_avg_mt, z_avg_lsb])
 
         # Saving senzitivity in Excel
-        sheet['F2'] = "Sensitivity (Slope):"
+        sheet['F2'] = "Senzitivitate (Panta):"
         sheet['G2'] = sensitivity
 
         # Create sensitivity graphic

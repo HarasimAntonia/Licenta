@@ -14,17 +14,17 @@ BAUDRATE = 115200
 SAMPLE = 1
 
 # Limits and name of the Excel file
-EXCEL_FILE = f'../Power_Down_Current_SAMPLE{SAMPLE}.xlsx'
+EXCEL_FILE = f'../Curent_Repaus_SAMPLE{SAMPLE}.xlsx'
 PD_LIMIT_NA = 1000.0
 PD_TYPICAL_NA = 500.0
 
 def create_power_down_graphic(sheet, readings, position):
     """ Generate the graphic for Power Down Current """
     chart = LineChart()
-    chart.title = "Power Down Current Analysis"
+    chart.title = "Analiza Curent Repaus"
     chart.style = 13
-    chart.y_axis.title = "Current (nA)"
-    chart.x_axis.title = "Number of measurement"
+    chart.y_axis.title = "Curent (nA)"
+    chart.x_axis.title = "Numarul masuratorii"
     chart.width = 20
     chart.height = 10
 
@@ -47,7 +47,7 @@ def create_power_down_graphic(sheet, readings, position):
 
     # Legend
     if len(chart.series) >= 3:
-        chart.series[0].title = SeriesLabel(v="Power Down Current")
+        chart.series[0].title = SeriesLabel(v="Curent Repaus")
 
         max_line = chart.series[1]
         max_line.title = SeriesLabel(v="Maximum")
@@ -56,7 +56,7 @@ def create_power_down_graphic(sheet, readings, position):
         max_line.graphicalProperties.line.width = 25000
 
         typical_line = chart.series[2]
-        typical_line.title = SeriesLabel(v="Typical")
+        typical_line.title = SeriesLabel(v="Tipic")
         typical_line.graphicalProperties.line.solidFill = "00B050"  # Green
         typical_line.graphicalProperties.line.dashStyle = "sysDot"
         typical_line.graphicalProperties.line.width = 25000
@@ -85,12 +85,12 @@ def power_down_current_test():
         # Excel initialization
         wb = Workbook()
         sheet = wb.active
-        sheet.title = "Power Down Current Data"
+        sheet.title = "Date Curent Repaus"
 
         # Table header
-        sheet.append(["No.", "Power Down Current (nA)"])
+        sheet.append(["Nr.", "Curent Repaus (nA)"])
         sheet.cell(row=1, column=25, value="Max Limit (nA)")
-        sheet.cell(row=1, column=26, value="Typical (nA)")
+        sheet.cell(row=1, column=26, value="Tipic (nA)")
 
         for i in range(1, 21):
             smu.configure_sense_function(mode="CURR")
